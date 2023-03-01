@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ProfessionEntity>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-8">
+            @if (@TempData["AlertMsg"] != null)
+            {
+                <span class="alert alert-success rounded-3" role="alert">@TempData["AlertMsg"]</span>
+            }
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Add New Profession", "Add", "Profession", "", new { @class = "btn btn-outline-dark float-end" })
+        </div>
+    </div>
+</div>
+<hr />
+<table id="AllProfession" class="display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Profession)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            @Html.HiddenFor(model => item.ProfessionID)
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Profession)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditProfessionDetails", "Profession", new { id = item.ProfessionID }, new { @class = "btn btn-outline-success" }) &nbsp;
+                    @Html.ActionLink("Delete", "DeleteProfession", "Profession", new { id = item.ProfessionID }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "btn btn-outline-danger" })
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#AllProfession').DataTable({
+                order: [], // for disable initial shorting
+                pageLength: 5, // for start page length
+                lengthMenu: [[5, 10, 25, -1], [5, 10, 25, 'All']] // for giving specific row count
+            });
+        });
+    </script>
+}

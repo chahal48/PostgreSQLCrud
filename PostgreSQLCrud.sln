@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33328.57
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostgreSQLCrud", "PostgreSQLCrud\PostgreSQLCrud.csproj", "{EBF4B177-D781-4418-BD8F-5DED0EE3F774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostgreSQLCrudDAL", "PostgreSQLCrudDAL\PostgreSQLCrudDAL.csproj", "{E179D014-C3DD-4840-AA9E-309DBB269BB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostgreSQLCrudBAL", "PostgreSQLCrudBAL\PostgreSQLCrudBAL.csproj", "{A9CD2E01-CC35-4026-8FEF-37BF12745DB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostgreSQLCrudEntity", "PostgreSQLCrudEntity\PostgreSQLCrudEntity.csproj", "{3C050A7F-1D87-4C3B-857B-AEDA053A65C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBF4B177-D781-4418-BD8F-5DED0EE3F774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF4B177-D781-4418-BD8F-5DED0EE3F774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF4B177-D781-4418-BD8F-5DED0EE3F774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF4B177-D781-4418-BD8F-5DED0EE3F774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E179D014-C3DD-4840-AA9E-309DBB269BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E179D014-C3DD-4840-AA9E-309DBB269BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E179D014-C3DD-4840-AA9E-309DBB269BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E179D014-C3DD-4840-AA9E-309DBB269BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9CD2E01-CC35-4026-8FEF-37BF12745DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CD2E01-CC35-4026-8FEF-37BF12745DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9CD2E01-CC35-4026-8FEF-37BF12745DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9CD2E01-CC35-4026-8FEF-37BF12745DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C050A7F-1D87-4C3B-857B-AEDA053A65C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C050A7F-1D87-4C3B-857B-AEDA053A65C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C050A7F-1D87-4C3B-857B-AEDA053A65C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C050A7F-1D87-4C3B-857B-AEDA053A65C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33813153-D42B-4186-BA6A-AEE8982E3C6D}
+	EndGlobalSection
+EndGlobal

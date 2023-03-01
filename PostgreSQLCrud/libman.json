@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.6.3",
+      "destination": "wwwroot/jquery/",
+      "files": [
+        "jquery.min.js"
+      ]
+    },
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "wwwroot/jqueryui/",
+      "files": [
+        "jquery-ui.min.js",
+        "themes/smoothness/jquery-ui.css",
+        "themes/smoothness/jquery-ui.min.css",
+        "themes/smoothness/theme.css",
+        "themes/smoothness/theme.min.css",
+        "themes/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png",
+        "themes/smoothness/images/ui-bg_glass_65_ffffff_1x400.png",
+        "themes/smoothness/images/ui-bg_glass_75_dadada_1x400.png",
+        "themes/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png",
+        "themes/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png",
+        "themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png",
+        "themes/smoothness/images/ui-icons_222222_256x240.png",
+        "themes/smoothness/images/ui-icons_2e83ff_256x240.png",
+        "themes/smoothness/images/ui-icons_454545_256x240.png",
+        "themes/smoothness/images/ui-icons_888888_256x240.png",
+        "themes/smoothness/images/ui-icons_cd0a0a_256x240.png"
+      ]
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/datatables/",
+      "files": [
+        "js/jquery.dataTables.min.js",
+        "images/sort_asc.png",
+        "images/sort_asc_disabled.png",
+        "images/sort_both.png",
+        "images/sort_desc.png",
+        "images/sort_desc_disabled.png",
+        "css/jquery.dataTables.min.css"
+      ]
+    },
+    {
+      "library": "jquery-validate@1.19.5",
+      "destination": "wwwroot/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js"
+      ]
+    },
+    {
+      "library": "bootstrap@5.2.3",
+      "destination": "wwwroot/bootstrap/"
+    }
+  ]
+}
