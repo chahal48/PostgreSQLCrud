@@ -37,7 +37,7 @@ namespace PostgreSQLCrudDAL.ADO
             com.CommandType = commandType;
             com.CommandText = commandText;
 
-            if (commandType == CommandType.StoredProcedure && parameters != null)
+            if (parameters != null)
             {
                 foreach (IDataParameter parameter in parameters)
                 {
@@ -62,7 +62,7 @@ namespace PostgreSQLCrudDAL.ADO
             com.CommandType = commandType;
             com.CommandText = commandText;
 
-            if (commandType == CommandType.StoredProcedure && parameters != null)
+            if (parameters != null)
             {
                 foreach (IDataParameter parameter in parameters)
                 {
@@ -87,7 +87,7 @@ namespace PostgreSQLCrudDAL.ADO
             com.CommandType = commandType;
             com.CommandText = commandText;
 
-            if (commandType == CommandType.StoredProcedure && parameters != null)
+            if (parameters != null)
             {
                 foreach (IDataParameter parameter in parameters)
                 {

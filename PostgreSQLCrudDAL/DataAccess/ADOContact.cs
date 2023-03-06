@@ -1,19 +1,23 @@
 ﻿using Npgsql;
 using PostgreSQLCrudDAL.ADO;
+using PostgreSQLCrudDAL.Interface;
 using PostgreSQLCrudEntity;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PostgreSQLCrudDAL.DataAccess
 {
     /// <summary>
     /// Implementation of IContact abstract methods
     /// </summary>
-    public partial class SQLContact
+    public partial class NpgSQLContact
     {
         /// <summary>
         /// Call stored procedure to get list of Contact
@@ -24,28 +28,28 @@ namespace PostgreSQLCrudDAL.DataAccess
             List<ContactEntity> ListContact = new List<ContactEntity>();
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetAllContact"))
+                using (IDataReader dr = exec.ExecuteReader(CommandType.Text, "SELECT * from udf_getallcontact();"))
                 {
                     while (dr.Read())
                     {
                         ListContact.Add(new ContactEntity
                         {
-                            ContactID = Convert.ToInt32(dr["ContactId"]),
-                            fName = Convert.ToString(dr["FirstName"]),
-                            lName = Convert.ToString(dr["LastName"]),
-                            emailAddr = Convert.ToString(dr["EmailAddress"]),
-                            Company = Convert.ToString(dr["Company"]),
-                            Category = (Category)Convert.ToInt32(dr["Category"]),
-                            Profession = Convert.ToString(dr["Profession"]),
-                            ProfessionID = Convert.ToInt32(dr["ProfessionId"]),
-                            Gender = (Gender)Convert.ToInt32(dr["Gender"]),
-                            DOB = (DateTime)dr["DOB"],
-                            ModeSlack = Convert.ToBoolean(dr["ModeSlack"]),
-                            ModeWhatsapp = Convert.ToBoolean(dr["ModeWhatsapp"]),
-                            ModePhone = Convert.ToBoolean(dr["ModePhone"]),
-                            ModeEmail = Convert.ToBoolean(dr["ModeEmail"]),
-                            ContactImage = Convert.ToString(dr["ContactImage"]),
-                            LastModified = Convert.ToDateTime(dr["LastModified"])
+                            ContactID = Convert.ToInt32(dr["_id"]),
+                            fName = Convert.ToString(dr["_firstname"]),
+                            lName = Convert.ToString(dr["_lastname"]),
+                            emailAddr = Convert.ToString(dr["_emailaddress"]),
+                            Company = Convert.ToString(dr["_company"]),
+                            Category = (Category)Convert.ToInt32(dr["_category"]),
+                            Profession = Convert.ToString(dr["_profession"]),
+                            ProfessionID = Convert.ToInt32(dr["_professionId"]),
+                            Gender = (Gender)Convert.ToInt32(dr["_gender"]),
+                            DOB = (DateTime)dr["_dob"],
+                            ModeSlack = Convert.ToBoolean(dr["_modeslack"]),
+                            ModeWhatsapp = Convert.ToBoolean(dr["_modewhatsapp"]),
+                            ModePhone = Convert.ToBoolean(dr["_modephone"]),
+                            ModeEmail = Convert.ToBoolean(dr["_modeemail"]),
+                            ContactImage = Convert.ToString(dr["_contactimage"]),
+                            LastModified = Convert.ToDateTime(dr["_lastmodified"])
                         });
                     }
                 }
@@ -62,28 +66,29 @@ namespace PostgreSQLCrudDAL.DataAccess
             ContactEntity contactEntity = new ContactEntity();
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetContactById",
-                    new NpgsqlParameter("@ContactId", id)))
+                using (IDataReader dr = exec.ExecuteReader(CommandType.Text, "SELECT * from udf_getcontactbyid(:_cid);",
+                    new NpgsqlParameter("_cid", id)))
                 {
                     while (dr.Read())
                     {
                         contactEntity = new ContactEntity
                         {
-                            ContactID = Convert.ToInt32(dr["ContactId"]),
-                            fName = Convert.ToString(dr["FirstName"]),
-                            lName = Convert.ToString(dr["LastName"]),
-                            emailAddr = Convert.ToString(dr["EmailAddress"]),
-                            Company = Convert.ToString(dr["Company"]),
-                            Category = (Category)Convert.ToInt32(dr["Category"]),
-                            Profession = Convert.ToString(dr["Profession"]),
-                            ProfessionID = Convert.ToInt32(dr["ProfessionId"]),
-                            Gender = (Gender)Convert.ToInt32(dr["Gender"]),
-                            DOB = (DateTime)dr["DOB"],
-                            ModeSlack = Convert.ToBoolean(dr["ModeSlack"]),
-                            ModeWhatsapp = Convert.ToBoolean(dr["ModeWhatsapp"]),
-                            ModePhone = Convert.ToBoolean(dr["ModePhone"]),
-                            ModeEmail = Convert.ToBoolean(dr["ModeEmail"]),
-                            ContactImage = Convert.ToString(dr["ContactImage"])
+                            ContactID = Convert.ToInt32(dr["_id"]),
+                            fName = Convert.ToString(dr["_firstname"]),
+                            lName = Convert.ToString(dr["_lastname"]),
+                            emailAddr = Convert.ToString(dr["_emailaddress"]),
+                            Company = Convert.ToString(dr["_company"]),
+                            Category = (Category)Convert.ToInt32(dr["_category"]),
+                            Profession = Convert.ToString(dr["_profession"]),
+                            ProfessionID = Convert.ToInt32(dr["_professionId"]),
+                            Gender = (Gender)Convert.ToInt32(dr["_gender"]),
+                            DOB = (DateTime)dr["_dob"],
+                            ModeSlack = Convert.ToBoolean(dr["_modeslack"]),
+                            ModeWhatsapp = Convert.ToBoolean(dr["_modewhatsapp"]),
+                            ModePhone = Convert.ToBoolean(dr["_modephone"]),
+                            ModeEmail = Convert.ToBoolean(dr["_modeemail"]),
+                            ContactImage = Convert.ToString(dr["_contactimage"]),
+                            LastModified = Convert.ToDateTime(dr["_lastmodified"])
                         };
                     }
                 }

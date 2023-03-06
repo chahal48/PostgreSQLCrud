@@ -30,10 +30,10 @@ namespace PostgreSQLCrud
 
             services.Configure<ConnectionSetting>(Configuration.GetSection("ConnectionSetting"));
 
-            services.AddScoped<IProfession, SQLProfession>();
+            services.AddScoped<IProfession, NpgSQLProfession>();
             services.AddScoped<ProfessionBAL>();
 
-            services.AddScoped<IContact, SQLContact>();
+            services.AddScoped<IContact, NpgSQLContact>();
             services.AddScoped<ContactBAL>();
         }
 

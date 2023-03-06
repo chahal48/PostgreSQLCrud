@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PostgreSQLCrudDAL.DataAccess
 {
-    public abstract class SQLBase
+    public abstract class NpgSQLBase
     {
-        public SQLBase()
+        public NpgSQLBase()
         {
 
         }

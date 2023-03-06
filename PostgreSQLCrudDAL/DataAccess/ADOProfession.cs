@@ -13,7 +13,7 @@ namespace PostgreSQLCrudDAL.DataAccess
     /// <summary>
     /// Implementation of IProfession abstract methods
     /// </summary>
-    public partial class SQLProfession
+    public partial class NpgSQLProfession
     {
         /// <summary>
         /// Call stored procedure to get list of profession
@@ -24,16 +24,16 @@ namespace PostgreSQLCrudDAL.DataAccess
             List<ProfessionEntity> ListProfession = new List<ProfessionEntity>();
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetAllProfession"))
+                using (IDataReader dr = exec.ExecuteReader(CommandType.Text, "select * from udf_GetAllProfession();"))
                 {
                     while (dr.Read())
                     {
                         ListProfession.Add(new ProfessionEntity
                         {
-                            ProfessionID = Convert.ToInt32(dr["ProfessionId"]),
-                            Profession = Convert.ToString(dr["Profession"]),
-                            Description = Convert.ToString(dr["Description"]),
-                            LastModified = Convert.ToDateTime(dr["LastModified"])
+                            ProfessionID = Convert.ToInt32(dr["_id"]),
+                            Profession = Convert.ToString(dr["_profession"]),
+                            Description = Convert.ToString(dr["_description"]),
+                            LastModified = Convert.ToDateTime(dr["_lastmodified"])
                         });
                     }
                 }
@@ -49,16 +49,16 @@ namespace PostgreSQLCrudDAL.DataAccess
             ProfessionEntity professionEntity = new ProfessionEntity();
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                using (IDataReader dr = exec.ExecuteReader(CommandType.StoredProcedure, "usp_GetProfessionById",
-                    new NpgsqlParameter("@ProfessionId", id)))
+                using (IDataReader dr = exec.ExecuteReader(CommandType.Text, "select * from udf_getprofessionbyid(:_pId);",
+                    new NpgsqlParameter("_pId", id)))
                 {
                     while (dr.Read())
                     {
                         professionEntity = new ProfessionEntity
                         {
-                            ProfessionID = Convert.ToInt32(dr["ProfessionId"]),
-                            Profession = Convert.ToString(dr["Profession"]),
-                            Description = Convert.ToString(dr["Description"])
+                            ProfessionID = Convert.ToInt32(dr["_id"]),
+                            Profession = Convert.ToString(dr["_profession"]),
+                            Description = Convert.ToString(dr["_description"])
                         };
                     }
                 }
@@ -72,13 +72,19 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         public bool AddProfession(ProfessionEntity professionEntity)
         {
+            int Result = 0;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_AddProfession",
-                    new NpgsqlParameter("@Profession", professionEntity.Profession),
-                    new NpgsqlParameter("@Description", professionEntity.Description));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select udf_addpofession(:_profession,:_description);",
+                    new NpgsqlParameter("_profession", professionEntity.Profession),
+                    new NpgsqlParameter("_description", professionEntity.Description));
 
-                return ReturnBool(Result);
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return Result == 1;
             }
         }
         /// <summary>
@@ -88,14 +94,20 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         public bool UpdateProfession(ProfessionEntity professionEntity)
         {
+            int Result = 0;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_UpdateProfession",
-                    new NpgsqlParameter("@ProfessionId", professionEntity.ProfessionID),
-                    new NpgsqlParameter("@Profession", professionEntity.Profession),
-                    new NpgsqlParameter("@Description", professionEntity.Description));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select udf_updateprofession(:_pId,:_profession,:_description);",
+                    new NpgsqlParameter("_pId", professionEntity.ProfessionID),
+                    new NpgsqlParameter("_profession", professionEntity.Profession),
+                    new NpgsqlParameter("_description", professionEntity.Description));
 
-                return ReturnBool(Result);
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return Result == 1;
             }
         }
         /// <summary>
@@ -105,12 +117,18 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         public bool DeleteProfession(int id)
         {
+            int Result = 0;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_DeleteProfession",
-                    new NpgsqlParameter("@ProfessionId", id));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select udf_deleteprofession(:_pId);",
+                    new NpgsqlParameter("_pId", id));
 
-                return ReturnBool(Result);
+                if (obj != null)
+                {
+                    Result = Convert.ToInt32(obj);
+                }
+
+                return Result == 1;
             }
         }
         /// <summary>
@@ -123,8 +141,8 @@ namespace PostgreSQLCrudDAL.DataAccess
             int Result = 1;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                var obj = exec.ExecuteScalar(CommandType.StoredProcedure, "usp_CheckProfessionAlreadyExists",
-                    new NpgsqlParameter("@Profession", profession));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select udf_checkprofessionalreadyexists(:_profession);",
+                    new NpgsqlParameter("_profession", profession));
 
                 if (obj != null)
                 {
