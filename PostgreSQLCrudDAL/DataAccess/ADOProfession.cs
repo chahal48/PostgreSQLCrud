@@ -72,19 +72,13 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         public bool AddProfession(ProfessionEntity professionEntity)
         {
-            int Result = 0;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
                 var obj = exec.ExecuteScalar(CommandType.Text, "select udf_addpofession(:_profession,:_description);",
                     new NpgsqlParameter("_profession", professionEntity.Profession),
                     new NpgsqlParameter("_description", professionEntity.Description));
 
-                if (obj != null)
-                {
-                    Result = Convert.ToInt32(obj);
-                }
-
-                return Result == 1;
+                return ReturnBool(obj);
             }
         }
         /// <summary>
@@ -94,7 +88,6 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         public bool UpdateProfession(ProfessionEntity professionEntity)
         {
-            int Result = 0;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
                 var obj = exec.ExecuteScalar(CommandType.Text, "select udf_updateprofession(:_pId,:_profession,:_description);",
@@ -102,12 +95,7 @@ namespace PostgreSQLCrudDAL.DataAccess
                     new NpgsqlParameter("_profession", professionEntity.Profession),
                     new NpgsqlParameter("_description", professionEntity.Description));
 
-                if (obj != null)
-                {
-                    Result = Convert.ToInt32(obj);
-                }
-
-                return Result == 1;
+                return ReturnBool(obj);
             }
         }
         /// <summary>
@@ -117,18 +105,12 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         public bool DeleteProfession(int id)
         {
-            int Result = 0;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
                 var obj = exec.ExecuteScalar(CommandType.Text, "select udf_deleteprofession(:_pId);",
                     new NpgsqlParameter("_pId", id));
 
-                if (obj != null)
-                {
-                    Result = Convert.ToInt32(obj);
-                }
-
-                return Result == 1;
+                return ReturnBool(obj);
             }
         }
         /// <summary>
@@ -159,6 +141,21 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <returns></returns>
         private bool ReturnBool(int result)
         {
+            return result > 0;
+        }
+
+        /// <summary>
+        /// procedure success/failure healper method
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private bool ReturnBool(object obj)
+        {
+            int result = 0;
+            if (obj != null)
+            {
+                result = Convert.ToInt32(obj);
+            }
             return result > 0;
         }
     }

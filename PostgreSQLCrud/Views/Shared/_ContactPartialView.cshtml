@@ -39,8 +39,10 @@
         </div>
         <div class="col-sm-5">
             <label asp-for="Category" class="control-label"></label>
-            <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control form-select">
+            <select asp-for="Category" class="form-control form-select">
                 <option selected="selected" value="">Select Category</option>
+                <option value="Client">Client</option>
+                <option value="Vendor">Vendor</option>
             </select>
             <span asp-validation-for="Category" class="text-danger" />
         </div>
@@ -54,9 +56,9 @@
             <span asp-validation-for="DOB" class="text-danger"></span>
             <br />
             <label asp-for="Gender" class="control-label"></label>
-            <input type="radio" asp-for="Gender" value="@Gender.Male" checked="checked" /> @Gender.Male &nbsp;
-            <input type="radio" asp-for="Gender" value="@Gender.Female" /> @Gender.Female &nbsp;
-            <input type="radio" asp-for="Gender" value="@Gender.Other" /> @Gender.Other
+            <input type="radio" asp-for="Gender" value="Male" checked="checked" /> Male &nbsp;
+            <input type="radio" asp-for="Gender" value="Female" /> Female &nbsp;
+            <input type="radio" asp-for="Gender" value="Other" /> Other
             <br />
             <span asp-validation-for="Gender" class="text-danger" />
         </div>

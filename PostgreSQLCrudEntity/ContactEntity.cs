@@ -48,11 +48,11 @@ namespace PostgreSQLCrudEntity
 
         [DisplayName("Category")]
         [Required(ErrorMessage = "Sorry, Category is not selected.")]
-        public Category Category { get; set; }
+        public string Category { get; set; }
 
         [DisplayName("Gender :")]
         [Required(ErrorMessage = "Sorry, Gender is not selected.")]
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
 
         [DisplayName("Full Name")]
         public string FullName

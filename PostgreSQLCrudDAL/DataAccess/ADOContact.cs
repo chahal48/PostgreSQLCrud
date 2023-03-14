@@ -1,9 +1,11 @@
-﻿using Npgsql;
+﻿using Microsoft.AspNetCore.Mvc;
+using Npgsql;
 using PostgreSQLCrudDAL.ADO;
 using PostgreSQLCrudDAL.Interface;
 using PostgreSQLCrudEntity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Net.Mail;
@@ -39,10 +41,10 @@ namespace PostgreSQLCrudDAL.DataAccess
                             lName = Convert.ToString(dr["_lastname"]),
                             emailAddr = Convert.ToString(dr["_emailaddress"]),
                             Company = Convert.ToString(dr["_company"]),
-                            Category = (Category)Convert.ToInt32(dr["_category"]),
+                            Category = Convert.ToString(dr["_category"]),
                             Profession = Convert.ToString(dr["_profession"]),
                             ProfessionID = Convert.ToInt32(dr["_professionId"]),
-                            Gender = (Gender)Convert.ToInt32(dr["_gender"]),
+                            Gender = Convert.ToString(dr["_gender"]),
                             DOB = (DateTime)dr["_dob"],
                             ModeSlack = Convert.ToBoolean(dr["_modeslack"]),
                             ModeWhatsapp = Convert.ToBoolean(dr["_modewhatsapp"]),
@@ -78,10 +80,10 @@ namespace PostgreSQLCrudDAL.DataAccess
                             lName = Convert.ToString(dr["_lastname"]),
                             emailAddr = Convert.ToString(dr["_emailaddress"]),
                             Company = Convert.ToString(dr["_company"]),
-                            Category = (Category)Convert.ToInt32(dr["_category"]),
+                            Category = Convert.ToString(dr["_category"]),
                             Profession = Convert.ToString(dr["_profession"]),
                             ProfessionID = Convert.ToInt32(dr["_professionId"]),
-                            Gender = (Gender)Convert.ToInt32(dr["_gender"]),
+                            Gender = Convert.ToString(dr["_gender"]),
                             DOB = (DateTime)dr["_dob"],
                             ModeSlack = Convert.ToBoolean(dr["_modeslack"]),
                             ModeWhatsapp = Convert.ToBoolean(dr["_modewhatsapp"]),
@@ -104,22 +106,27 @@ namespace PostgreSQLCrudDAL.DataAccess
         {
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_AddContact",
-                    new NpgsqlParameter("@ProfessionId", contactEntity.ProfessionID),
-                    new NpgsqlParameter("@FirstName", contactEntity.fName),
-                    new NpgsqlParameter("@LastName", contactEntity.lName),
-                    new NpgsqlParameter("@EmailAddress", contactEntity.emailAddr),
-                    new NpgsqlParameter("@Company", contactEntity.Company),
-                    new NpgsqlParameter("@Category", contactEntity.Category),
-                    new NpgsqlParameter("@Gender", contactEntity.Gender),
-                    new NpgsqlParameter("@DOB", contactEntity.DOB),
-                    new NpgsqlParameter("@ModeSlack", contactEntity.ModeSlack),
-                    new NpgsqlParameter("@ModeEmail", contactEntity.ModeEmail),
-                    new NpgsqlParameter("@ModePhone", contactEntity.ModePhone),
-                    new NpgsqlParameter("@ModeWhatsapp", contactEntity.ModeWhatsapp),
-                    new NpgsqlParameter("@ContactImage", contactEntity.ContactImage));
+                var a = contactEntity.Category;
+                var b = contactEntity.Gender;
 
-                return ReturnBool(Result);
+                var obj = exec.ExecuteScalar(CommandType.Text, "select " +
+                    "udf_insertcontact(:_pid,:_firstname,:_lastname,:_emailaddress,:_company,:_category,:_gender,:_dob," +
+                    ":_modeslack,:_modewhatsapp,:_modeemail,:_modephone,:_contactimage)",
+                    new NpgsqlParameter("_pid", contactEntity.ProfessionID),
+                    new NpgsqlParameter("_firstname", contactEntity.fName),
+                    new NpgsqlParameter("_lastname", contactEntity.lName),
+                    new NpgsqlParameter("_emailaddress", contactEntity.emailAddr),
+                    new NpgsqlParameter("_company", contactEntity.Company),
+                    new NpgsqlParameter("_category", contactEntity.Category),
+                    new NpgsqlParameter("_gender", contactEntity.Gender),
+                    new NpgsqlParameter("_dob", contactEntity.DOB.Date),
+                    new NpgsqlParameter("_modeslack", contactEntity.ModeSlack),
+                    new NpgsqlParameter("_modeemail", contactEntity.ModeEmail),
+                    new NpgsqlParameter("_modephone", contactEntity.ModePhone),
+                    new NpgsqlParameter("_modewhatsapp", contactEntity.ModeWhatsapp),
+                    new NpgsqlParameter("_contactimage", contactEntity.ContactImage));
+
+                return ReturnBool(obj);
             }
         }
         /// <summary>
@@ -131,23 +138,25 @@ namespace PostgreSQLCrudDAL.DataAccess
         {
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_UpdateContact",
-                    new NpgsqlParameter("@ContactId", contactEntity.ContactID),
-                    new NpgsqlParameter("@ProfessionId", contactEntity.ProfessionID),
-                    new NpgsqlParameter("@FirstName", contactEntity.fName),
-                    new NpgsqlParameter("@LastName", contactEntity.lName),
-                    new NpgsqlParameter("@EmailAddress", contactEntity.emailAddr),
-                    new NpgsqlParameter("@Company", contactEntity.Company),
-                    new NpgsqlParameter("@Category", contactEntity.Category),
-                    new NpgsqlParameter("@Gender", contactEntity.Gender),
-                    new NpgsqlParameter("@DOB", contactEntity.DOB),
-                    new NpgsqlParameter("@ModeSlack", contactEntity.ModeSlack),
-                    new NpgsqlParameter("@ModeEmail", contactEntity.ModeEmail),
-                    new NpgsqlParameter("@ModePhone", contactEntity.ModePhone),
-                    new NpgsqlParameter("@ModeWhatsapp", contactEntity.ModeWhatsapp),
-                    new NpgsqlParameter("@ContactImage", contactEntity.ContactImage));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select " +
+                    "udf_updatecontact(:_cid,:_pid,:_firstname,:_lastname,:_emailaddress,:_company,:_category,:_gender,:_dob," +
+                    ":_modeslack,:_modewhatsapp,:_modeemail,:_modephone,:_contactimage)",
+                    new NpgsqlParameter("_cid", contactEntity.ContactID),
+                    new NpgsqlParameter("_pid", contactEntity.ProfessionID),
+                    new NpgsqlParameter("_firstname", contactEntity.fName),
+                    new NpgsqlParameter("_lastname", contactEntity.lName),
+                    new NpgsqlParameter("_emailaddress", contactEntity.emailAddr),
+                    new NpgsqlParameter("_company", contactEntity.Company),
+                    new NpgsqlParameter("_category", contactEntity.Category),
+                    new NpgsqlParameter("_gender", contactEntity.Gender),
+                    new NpgsqlParameter( "_dob", contactEntity.DOB),
+                    new NpgsqlParameter("_modeslack", contactEntity.ModeSlack),
+                    new NpgsqlParameter("_modeemail", contactEntity.ModeEmail),
+                    new NpgsqlParameter("_modephone", contactEntity.ModePhone),
+                    new NpgsqlParameter("_modewhatsapp", contactEntity.ModeWhatsapp),
+                    new NpgsqlParameter("_contactimage", contactEntity.ContactImage));
 
-                return ReturnBool(Result);
+                return ReturnBool(obj);
             }
         }
         /// <summary>
@@ -159,10 +168,10 @@ namespace PostgreSQLCrudDAL.DataAccess
         {
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                int Result = exec.ExecuteNonQuery(CommandType.StoredProcedure, "usp_DeleteContact",
-                    new NpgsqlParameter("@ContactId", id));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select udf_deletecontact(:_cid);",
+                    new NpgsqlParameter("_cid", id));
 
-                return ReturnBool(Result);
+                return ReturnBool(obj);
             }
         }
         /// <summary>
@@ -175,8 +184,8 @@ namespace PostgreSQLCrudDAL.DataAccess
             int Result = 1;
             using (ADOExecution exec = new ADOExecution(_connection.SQLString))
             {
-                var obj = exec.ExecuteScalar(CommandType.StoredProcedure, "usp_CheckEmailAlreadyExists",
-                    new NpgsqlParameter("@Email", email));
+                var obj = exec.ExecuteScalar(CommandType.Text, "select udf_checkemailalreadyexists(:_email);",
+                    new NpgsqlParameter("_email", email));
 
                 if (obj != null)
                 {
@@ -189,10 +198,15 @@ namespace PostgreSQLCrudDAL.DataAccess
         /// <summary>
         /// procedure success/failure healper method
         /// </summary>
-        /// <param name="result"></param>
+        /// <param name="obj"></param>
         /// <returns></returns>
-        private bool ReturnBool(int result)
+        private bool ReturnBool(object obj)
         {
+            int result = 0;
+            if (obj != null)
+            {
+                result = Convert.ToInt32(obj);
+            }
             return result > 0;
         }
     }
