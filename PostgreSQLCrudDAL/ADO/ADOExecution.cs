@@ -10,7 +10,7 @@ namespace PostgreSQLCrudDAL.ADO
 {
     class ADOExecution : IDisposable
     {
-        #region SQL helper class
+        #region NpgSQL helper class
 
         NpgsqlConnection _con;
         public ADOExecution(string connectionString)

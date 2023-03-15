@@ -320,6 +320,10 @@ CREATE OR REPLACE FUNCTION public.udf_updatecontact(
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
 BEGIN
+	Update public.tblcontacts
+	SET contactimage=_contactimage
+	WHERE contactid = _cid and _contactimage is not null and length(_contactimage) > 0;
+	
 	UPDATE public.tblcontacts
 	SET professionid=_pid, 
 	firstname=_firstname,
@@ -327,7 +331,7 @@ BEGIN
 	emailaddress=_emailaddress,
 	company=_company, category=_category::udt_category, gender=_gender::udt_gender, dob=_dob, 
 	modeslack=_modeslack, modewhatsapp=_modewhatsapp, modeemail=_modeemail,
-	modephone=_modephone, contactimage=_contactimage, lastmodified=default
+	modephone=_modephone, lastmodified=default	
 	WHERE contactid = _cid;
 	IF FOUND THEN -- UPDATED SUCCESSFULLY
 	RETURN 1;

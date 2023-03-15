@@ -28,9 +28,10 @@ namespace PostgreSQLCrudEntity
         public string fName { get; set; }
 
         [DisplayName("Last Name")]
+        [Required(ErrorMessage = "Last name is mandatory!!")]
         [StringLength(30, ErrorMessage = "Last name character length should be less than 30.")]
         [RegularExpression("^[A-Za-z -]*$", ErrorMessage = "Sorry, only letters (a-z) are allowed.")]
-        public string? lName { get; set; }
+        public string lName { get; set; }
 
         [DisplayName("Email")]
         [Required(ErrorMessage = "Email is mandatory!!")]
@@ -80,11 +81,11 @@ namespace PostgreSQLCrudEntity
         public bool ModePhone { get; set; }
 
         //public HttpPostedFileBase Image { get; set; }s
-        public string? ContactImage { get; set; }
+        public string ContactImage { get; set; }
 
         public DateTime? LastModified { get; set; }
 
-        public string? initialEmail
+        public string initialEmail
         {
             get
             {
